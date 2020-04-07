@@ -57,20 +57,21 @@ public class UserMailsController {
                 userMailsService.insert(userMail);
             }
         } catch (Exception e) {
-            logger.error("绑定邮箱失败", e);
-            return ResponseResult.fail("绑定邮箱失败,数据库异常");
+            logger.error("绑bind email error败", e);
+            return ResponseResult.fail("绑bind email error");
         }
 
-        return ResponseResult.success("绑定邮箱成功");
+        return ResponseResult.success("bind email success");
     }
 
     /**
-     * 获取用户的接收邮箱
+     * 大获取接受邮箱
      *
      * @param userId
      * @return
      */
     public ResponseResult getReceviceMail(int userId) {
+        // 获取接收邮箱
         return null;
     }
 
@@ -81,6 +82,7 @@ public class UserMailsController {
      * @return
      */
     public ResponseResult getSenderMails(int userId) {
+        // 获取发送邮箱
         return null;
     }
 
