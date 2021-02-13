@@ -2,8 +2,8 @@ package com.focus.easymail.entity;
 
 import lombok.Data;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户邮箱绑定表， 用于群发邮箱， 和收件邮箱(UserMails)实体类

@@ -3,11 +3,13 @@ package com.focus.easymail.controller;
 import com.focus.easymail.controller.vo.ResponseResult;
 import com.focus.easymail.entity.User;
 import com.focus.easymail.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -16,6 +18,7 @@ import java.util.Date;
  * @author makejava
  * @since 2020-02-23 11:58:01
  */
+@Api(tags = "用户登录注册相关")
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -28,16 +31,16 @@ public class UserController {
     /**
      * 通过主键查询单条数据
      *
-     * @param id 主键
      * @return 单条数据
      */
     @GetMapping("selectOne")
-    public User selectOne(Integer id) {
-        return this.userService.queryById(id);
+    public User getUserByUsername(String username) {
+        return userService.queryByUserName(username);
     }
 
     @PostMapping(value = "login")
-    public ResponseResult login(String username, String password) {
+    @ApiOperation("用户登录")
+    public ResponseResult login(String username, String password, HttpServletRequest request) {
 
         // 要判断输入的用户名称 是否为空
         // 判断输入的密码是否为空
@@ -84,12 +87,17 @@ public class UserController {
 
         responseResult.setState(0);
         responseResult.setMessage("用户登录成功");
+
+
+        request.getSession().setAttribute("user",user);
+
         return responseResult;
     }
 
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    public ResponseResult register(@RequestBody User user) {
+    @ApiOperation("用户注册")
+    public ResponseResult register(@RequestBody User user, HttpServletRequest request) {
 
         String username = user.getUsername();
 
@@ -146,6 +154,7 @@ public class UserController {
             responseResult.setMessage("数据库异常");
             return responseResult;
         }
+
     }
 
 }

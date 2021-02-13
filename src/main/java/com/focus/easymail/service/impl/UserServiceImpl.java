@@ -1,7 +1,7 @@
 package com.focus.easymail.service.impl;
 
-import com.focus.easymail.entity.User;
 import com.focus.easymail.dao.UserDao;
+import com.focus.easymail.entity.User;
 import com.focus.easymail.service.UserService;
 import org.springframework.stereotype.Service;
 

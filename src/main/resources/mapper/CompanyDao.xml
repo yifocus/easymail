@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.focus.easymail.dao.CompanyDao">
+
+    <resultMap type="com.focus.easymail.entity.Company" id="CompanyMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="simpleName" column="simple_name" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="identify" column="identify" jdbcType="VARCHAR"/>
+        <result property="countryId" column="country_id" jdbcType="INTEGER"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="fax" column="fax" jdbcType="VARCHAR"/>
+        <result property="website" column="website" jdbcType="VARCHAR"/>
+        <result property="sourceId" column="source_id" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="bussinessTypeId" column="bussiness_type_id" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="INTEGER"/>
+        <result property="bankInfo" column="bank_info" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="countryDate" column="country_date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CompanyMap">
+        select
+          id, simple_name, name, code, identify, country_id, city, province, address, user_id, category_id, phone, fax, website, source_id, product_id, bussiness_type_id, remark, level, bank_info, create_date, country_date, update_date
+        from mail.company
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CompanyMap">
+        select
+          id, simple_name, name, code, identify, country_id, city, province, address, user_id, category_id, phone, fax, website, source_id, product_id, bussiness_type_id, remark, level, bank_info, create_date, country_date, update_date
+        from mail.company
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CompanyMap">
+        select
+          id, simple_name, name, code, identify, country_id, city, province, address, user_id, category_id, phone, fax, website, source_id, product_id, bussiness_type_id, remark, level, bank_info, create_date, country_date, update_date
+        from mail.company
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="simpleName != null and simpleName != ''">
+                and simple_name = #{simpleName}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="code != null and code != ''">
+                and code = #{code}
+            </if>
+            <if test="identify != null and identify != ''">
+                and identify = #{identify}
+            </if>
+            <if test="countryId != null">
+                and country_id = #{countryId}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="fax != null and fax != ''">
+                and fax = #{fax}
+            </if>
+            <if test="website != null and website != ''">
+                and website = #{website}
+            </if>
+            <if test="sourceId != null">
+                and source_id = #{sourceId}
+            </if>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            <if test="bussinessTypeId != null">
+                and bussiness_type_id = #{bussinessTypeId}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="level != null">
+                and level = #{level}
+            </if>
+            <if test="bankInfo != null and bankInfo != ''">
+                and bank_info = #{bankInfo}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="countryDate != null">
+                and country_date = #{countryDate}
+            </if>
+            <if test="updateDate != null">
+                and update_date = #{updateDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.company(simple_name, name, code, identify, country_id, city, province, address, user_id, category_id, phone, fax, website, source_id, product_id, bussiness_type_id, remark, level, bank_info, create_date, country_date, update_date)
+        values (#{simpleName}, #{name}, #{code}, #{identify}, #{countryId}, #{city}, #{province}, #{address}, #{userId}, #{categoryId}, #{phone}, #{fax}, #{website}, #{sourceId}, #{productId}, #{bussinessTypeId}, #{remark}, #{level}, #{bankInfo}, #{createDate}, #{countryDate}, #{updateDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update mail.company
+        <set>
+            <if test="simpleName != null and simpleName != ''">
+                simple_name = #{simpleName},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            <if test="identify != null and identify != ''">
+                identify = #{identify},
+            </if>
+            <if test="countryId != null">
+                country_id = #{countryId},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="province != null and province != ''">
+                province = #{province},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="fax != null and fax != ''">
+                fax = #{fax},
+            </if>
+            <if test="website != null and website != ''">
+                website = #{website},
+            </if>
+            <if test="sourceId != null">
+                source_id = #{sourceId},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId},
+            </if>
+            <if test="bussinessTypeId != null">
+                bussiness_type_id = #{bussinessTypeId},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="bankInfo != null and bankInfo != ''">
+                bank_info = #{bankInfo},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="countryDate != null">
+                country_date = #{countryDate},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from mail.company where id = #{id}
+    </delete>
+
+</mapper>

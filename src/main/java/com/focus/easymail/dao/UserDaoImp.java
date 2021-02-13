@@ -1,6 +1,7 @@
 package com.focus.easymail.dao;
 
 import com.focus.easymail.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -11,6 +12,9 @@ import java.util.List;
 
 @Service
 public class UserDaoImp implements UserDao {
+
+    @Autowired
+    UserDao userDao;
 
     @Override
     public User queryById(Integer id) {
@@ -62,6 +66,6 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User queryByUserName(String username) {
-        return null;
+        return userDao.queryByUserName(username);
     }
 }
