@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.focus.easymail.dao.MailsSingleDao">
+
+    <resultMap type="com.focus.easymail.entity.MailsSingle" id="MailsSingleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="sender" column="sender" jdbcType="VARCHAR"/>
+        <result property="senderMail" column="sender_mail" jdbcType="VARCHAR"/>
+        <result property="senderUserId" column="sender_user_id" jdbcType="INTEGER"/>
+        <result property="receiverMails" column="receiver_mails" jdbcType="VARCHAR"/>
+        <result property="receiversInfo" column="receivers_info" jdbcType="VARCHAR"/>
+        <result property="ccMails" column="cc_mails" jdbcType="VARCHAR"/>
+        <result property="ccInfo" column="cc_info" jdbcType="VARCHAR"/>
+        <result property="stats" column="stats" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="body" column="body" jdbcType="VARCHAR"/>
+        <result property="attachment" column="attachment" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MailsSingleMap">
+        select id,
+               sender,
+               sender_mail,
+               sender_user_id,
+               receiver_mails,
+               receivers_info,
+               cc_mails,
+               cc_info,
+               stats,
+               title,
+               body,
+               attachment
+        from mail.mails_single
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MailsSingleMap">
+        select id,
+               sender,
+               sender_mail,
+               sender_user_id,
+               receiver_mails,
+               receivers_info,
+               cc_mails,
+               cc_info,
+               stats,
+               title,
+               body,
+               attachment
+        from mail.mails_single limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MailsSingleMap">
+        select
+        id, sender, sender_mail, sender_user_id, receiver_mails, receivers_info, cc_mails, cc_info, stats, title, body,
+        attachment
+        from mail.mails_single
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+            <if test="senderMail != null and senderMail != ''">
+                and sender_mail = #{senderMail}
+            </if>
+            <if test="senderUserId != null">
+                and sender_user_id = #{senderUserId}
+            </if>
+            <if test="receiverMails != null and receiverMails != ''">
+                and receiver_mails = #{receiverMails}
+            </if>
+            <if test="receiversInfo != null and receiversInfo != ''">
+                and receivers_info = #{receiversInfo}
+            </if>
+            <if test="ccMails != null and ccMails != ''">
+                and cc_mails = #{ccMails}
+            </if>
+            <if test="ccInfo != null and ccInfo != ''">
+                and cc_info = #{ccInfo}
+            </if>
+            <if test="stats != null">
+                and stats = #{stats}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="body != null">
+                and body = #{body}
+            </if>
+            <if test="attachment != null and attachment != ''">
+                and attachment = #{attachment}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.mails_single(sender, sender_mail, sender_user_id, receiver_mails, receivers_info, cc_mails,
+                                      cc_info, stats, title, body, attachment)
+        values (#{sender}, #{senderMail}, #{senderUserId}, #{receiverMails}, #{receiversInfo}, #{ccMails}, #{ccInfo},
+                #{stats}, #{title}, #{body}, #{attachment})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.mails_single(sender, sender_mail, sender_user_id, receiver_mails, receivers_info, cc_mails,
+        cc_info, stats, title, body, attachment)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.sender}, #{entity.senderMail}, #{entity.senderUserId}, #{entity.receiverMails},
+            #{entity.receiversInfo}, #{entity.ccMails}, #{entity.ccInfo}, #{entity.stats}, #{entity.title},
+            #{entity.body}, #{entity.attachment})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.mails_single(sender, sender_mail, sender_user_id, receiver_mails, receivers_info, cc_mails,
+        cc_info, stats, title, body, attachment)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.sender}, #{entity.senderMail}, #{entity.senderUserId}, #{entity.receiverMails},
+            #{entity.receiversInfo}, #{entity.ccMails}, #{entity.ccInfo}, #{entity.stats}, #{entity.title},
+            #{entity.body}, #{entity.attachment})
+        </foreach>
+        on duplicate key update
+        sender = values(sender) , sender_mail = values(sender_mail) , sender_user_id = values(sender_user_id) ,
+        receiver_mails = values(receiver_mails) , receivers_info = values(receivers_info) , cc_mails = values(cc_mails)
+        , cc_info = values(cc_info) , stats = values(stats) , title = values(title) , body = values(body) , attachment =
+        values(attachment)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update mail.mails_single
+        <set>
+            <if test="sender != null and sender != ''">
+                sender = #{sender},
+            </if>
+            <if test="senderMail != null and senderMail != ''">
+                sender_mail = #{senderMail},
+            </if>
+            <if test="senderUserId != null">
+                sender_user_id = #{senderUserId},
+            </if>
+            <if test="receiverMails != null and receiverMails != ''">
+                receiver_mails = #{receiverMails},
+            </if>
+            <if test="receiversInfo != null and receiversInfo != ''">
+                receivers_info = #{receiversInfo},
+            </if>
+            <if test="ccMails != null and ccMails != ''">
+                cc_mails = #{ccMails},
+            </if>
+            <if test="ccInfo != null and ccInfo != ''">
+                cc_info = #{ccInfo},
+            </if>
+            <if test="stats != null">
+                stats = #{stats},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="attachment != null and attachment != ''">
+                attachment = #{attachment},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from mail.mails_single
+        where id = #{id}
+    </delete>
+
+</mapper>
+

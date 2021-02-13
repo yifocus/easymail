@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.focus.easymail.dao.ColorMarkDao">
+
+    <resultMap type="com.focus.easymail.entity.ColorMark" id="ColorMarkMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="identify" column="identify" jdbcType="VARCHAR"/>
+        <result property="colorValue" column="color_value" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ColorMarkMap">
+        select id,
+               identify,
+               color_value,
+               create_date
+        from mail.color_mark
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ColorMarkMap">
+        select id,
+               identify,
+               color_value,
+               create_date
+        from mail.color_mark limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ColorMarkMap">
+        select
+        id, identify, color_value, create_date
+        from mail.color_mark
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="identify != null and identify != ''">
+                and identify = #{identify}
+            </if>
+            <if test="colorValue != null and colorValue != ''">
+                and color_value = #{colorValue}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.color_mark(identify, color_value, create_date)
+        values (#{identify}, #{colorValue}, #{createDate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.color_mark(identify, color_value, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.identify}, #{entity.colorValue}, #{entity.createDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into mail.color_mark(identify, color_value, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.identify}, #{entity.colorValue}, #{entity.createDate})
+        </foreach>
+        on duplicate key update
+        identify = values(identify) , color_value = values(color_value) , create_date = values(create_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update mail.color_mark
+        <set>
+            <if test="identify != null and identify != ''">
+                identify = #{identify},
+            </if>
+            <if test="colorValue != null and colorValue != ''">
+                color_value = #{colorValue},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from mail.color_mark
+        where id = #{id}
+    </delete>
+
+</mapper>
+
